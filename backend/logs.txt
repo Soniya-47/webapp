@@ -1,0 +1,5 @@
+WhatsApp Clone Backend Running
+--- Registration Test ---
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxZmE3ZmU3Ny05NDc1LTQyZjgtOTU0Ni04ZjM5ZmFmNTRmNjYiLCJpYXQiOjE3NzE4NTU3NDl9.O2lQQaoTTifE_1llaRP-yDtfLwTrSmrDBqKwaNEdIvM","user":{"id":"1fa7fe77-9475-42f8-9546-8f39faf54f66","username":"testuser_final"}}
+--- Login Test ---
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxZmE3ZmU3Ny05NDc1LTQyZjgtOTU0Ni04ZjM5ZmFmNTRmNjYiLCJpYXQiOjE3NzE4NTU3NDl9.O2lQQaoTTifE_1llaRP-yDtfLwTrSmrDBqKwaNEdIvM","user":{"id":"1fa7fe77-9475-42f8-9546-8f39faf54f66","username":"testuser_final"}}
