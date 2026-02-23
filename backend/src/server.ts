@@ -19,11 +19,18 @@ const io = new Server(httpServer, {
 
 const prisma = new PrismaClient();
 
+try {
+    await prisma.$connect();
+    console.log('Connected to Database');
+} catch (e) {
+    console.error('Prisma connection error:', e);
+}
+
 app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('WhatsApp Clone Backend Running');
+    res.json({ message: 'WhatsApp Clone Backend Running', env: process.env.VERCEL ? 'vercel' : 'local' });
 });
 
 // Auth Routes
@@ -59,34 +66,36 @@ app.get('/api/conversations/:userId', async (req, res) => {
     res.json(conversations);
 });
 
-// Socket Handler
-io.on('connection', (socket) => {
-    console.log('a user connected', socket.id);
+// Socket Handler (Not supported on Vercel, but keeping for local dev)
+if (!process.env.VERCEL) {
+    io.on('connection', (socket) => {
+        console.log('a user connected', socket.id);
 
-    socket.on('join', (room) => {
-        socket.join(room);
-        console.log(`User joined room: ${room}`);
-    });
-
-    socket.on('sendMessage', async (data) => {
-        const { content, senderId, conversationId } = data;
-        const message = await prisma.message.create({
-            data: {
-                content,
-                senderId,
-                conversationId,
-            },
-            include: {
-                sender: { select: { username: true } }
-            }
+        socket.on('join', (room) => {
+            socket.join(room);
+            console.log(`User joined room: ${room}`);
         });
-        io.to(conversationId).emit('message', message);
-    });
 
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+        socket.on('sendMessage', async (data) => {
+            const { content, senderId, conversationId } = data;
+            const message = await prisma.message.create({
+                data: {
+                    content,
+                    senderId,
+                    conversationId,
+                },
+                include: {
+                    sender: { select: { username: true } }
+                }
+            });
+            io.to(conversationId).emit('message', message);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
+        });
     });
-});
+}
 
 const PORT = process.env.PORT || 4000;
 
@@ -97,3 +106,4 @@ if (!process.env.VERCEL) {
 }
 
 export { io, prisma, app };
+export default app;
