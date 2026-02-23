@@ -94,4 +94,4 @@ httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-export { io, prisma };
+export { io, prisma, app };
